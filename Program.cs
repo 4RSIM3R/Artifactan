@@ -1,7 +1,9 @@
+using System.Security.Claims;
 using Artifactan.Dto;
 using Artifactan.Entities;
 using Artifactan.Jobs;
 using Artifactan.Providers;
+using Artifactan.Providers.Auth;
 using Hangfire;
 using Hangfire.Storage.SQLite;
 using HangfireBasicAuthenticationFilter;
@@ -20,6 +22,14 @@ builder.Services.AddControllers(options =>
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddTransient<ClaimsPrincipal>(service => service.GetService<IHttpContextAccessor>().HttpContext.User);
+builder.Services.AddAuthentication(PasetoAuthProvider.DefaultScheme)
+    .AddScheme<PasetoAuthProvider, PasetoAuthHandler>(PasetoAuthProvider.DefaultScheme, options =>
+    {
+        
+    });
 
 builder.Services.AddApplicationDbContext();
 builder.Services.AddFluentValidation();
@@ -44,6 +54,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

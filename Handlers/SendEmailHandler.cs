@@ -1,0 +1,12 @@
+using Artifactan.Queries;
+using MediatR;
+
+namespace Artifactan.Handlers;
+
+public class SendEmailHandler : INotificationHandler<SendEmailToNewUser>
+{
+    public Task Handle(SendEmailToNewUser notification, CancellationToken cancellationToken)
+    {
+        throw new NotImplementedException();
+    }
+}
