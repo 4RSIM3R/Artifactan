@@ -1,10 +1,8 @@
-using System.Net;
 using Artifactan.Dto;
-using Artifactan.Entities.Master;
-using Artifactan.Queries;
+using Artifactan.Dto.Request;
+using Artifactan.Queries.Register;
 using FluentValidation;
 using MediatR;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Artifactan.Controllers;
@@ -13,23 +11,20 @@ namespace Artifactan.Controllers;
 [Route("register")]
 public class RegisterController : ControllerBase
 {
+    private readonly IValidator<RegisterRequest> _registerValidator;
+    private readonly IMediator _mediator;
 
-    private readonly IValidator<User> registerValidator;
-    private readonly IMediator mediator;
-
-    public RegisterController(IValidator<User> registerVaidator, IMediator mediator)
+    public RegisterController(IValidator<RegisterRequest> registerValidator, IMediator mediator)
     {
-        registerValidator = registerVaidator;
-        this.mediator = mediator;
+        _registerValidator = registerValidator;
+        this._mediator = mediator;
     }
 
 
     [HttpPost]
-    public async Task<ActionResult> Register([FromBody] User payload)
+    public async Task<ActionResult> Register([FromBody] RegisterRequest payload)
     {
-
-
-        var validation = registerValidator.Validate(payload);
+        var validation = await _registerValidator.ValidateAsync(payload);
 
         if (!validation.IsValid)
         {
@@ -38,11 +33,8 @@ public class RegisterController : ControllerBase
             return UnprocessableEntity(new BaseResponse<Dictionary<string, string>>("Validation Error", errors));
         }
 
-        var result = await mediator.Send(new RegisterNewUser(payload));
+        var result = await _mediator.Send(new RegisterNewUser(payload));
 
         return Ok(result);
-
     }
-
-
 }

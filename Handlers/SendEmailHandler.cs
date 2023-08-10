@@ -1,4 +1,5 @@
 using Artifactan.Queries;
+using Artifactan.Queries.Register;
 using MediatR;
 
 namespace Artifactan.Handlers;

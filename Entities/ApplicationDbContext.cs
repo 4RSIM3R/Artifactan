@@ -23,9 +23,12 @@ public class ApplicationDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
+        
         builder.Entity<User>()
             .HasIndex(p => p.Email)
             .IsUnique(true);
+
+        
     }
 
     public void AddTimestamp()

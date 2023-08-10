@@ -3,16 +3,16 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Artifactan.Controllers;
 
-[Authorize]
 [ApiController]
 [Route("artifact")]
+[Authorize]
 public class ArtifactController : ControllerBase
 {
-
-    [HttpGet("/")]
-    public async Task<IActionResult> GetAllArtifact()
+    [HttpGet]
+    public IActionResult GetAllArtifact()
     {
-        return Ok("Success");
+        var user = HttpContext.Items["User"];
+        ;
+        return Ok(user ?? "Success");
     }
-
 }
