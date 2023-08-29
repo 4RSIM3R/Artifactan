@@ -25,7 +25,8 @@ public class NewRegisterUserHandler : IRequestHandler<RegisterNewUser, User>
             {
                 Password = request.User.Password,
                 Email = request.User.Email,
-                Username = request.User.Username
+                Username = request.User.Username,
+                Otp = generateOtpToken()
             };
 
             await _dbContext.Users.AddAsync(user, cancellationToken);
@@ -38,5 +39,13 @@ public class NewRegisterUserHandler : IRequestHandler<RegisterNewUser, User>
             await transaction.RollbackAsync(cancellationToken);
             throw new BadHttpRequestException(exception.Message, exception);
         }
+    }
+    
+    private string generateOtpToken()
+    {
+        Random rnd = new Random();
+        string randomNumber = (rnd.Next(1000,9999)).ToString();
+
+        return randomNumber;
     }
 }

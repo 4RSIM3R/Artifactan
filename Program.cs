@@ -19,6 +19,8 @@ var builder = WebApplication.CreateBuilder(args);
 // add database options
 builder.Services.Configure<DatabaseOptions>(builder.Configuration.GetSection("DatabaseOptions"));
 builder.Services.Configure<JwtConfig>(builder.Configuration.GetSection("JwtConfig"));
+builder.Services.Configure<SendEmailConfig>(builder.Configuration.GetSection("SmtpConfig"));
+
 // authentication
 
 // builder.Services.AddAuthentication(options =>
@@ -99,4 +101,4 @@ app.MapHangfireDashboard(options);
 
 // RecurringJob.AddOrUpdate<IArtifactJob>("upload_artifact", (x) => x.UploadArtifact(), "* * * * *");
 
-app.Run();
+app.Run("http://localhost:4000");

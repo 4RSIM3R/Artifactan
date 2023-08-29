@@ -8,6 +8,8 @@ public static class ServiceCollectionExtension
     {
         services.AddScoped<JwtConfig>();
         services.AddScoped<JwtUtils>();
+        services.AddScoped<SendEmailConfig>();
+        services.AddScoped<SendEmailUtils>();
         return services;
     }
 }
