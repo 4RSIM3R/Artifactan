@@ -5,4 +5,4 @@ using MediatR;
 namespace Artifactan.Queries.Register;
 
 public record RegisterNewUser(RegisterRequest User) : IRequest<User>;
-public record SendEmailToNewUser(RegisterRequest User) : INotification;
+public record SendEmailToNewUser(User User) : INotification;

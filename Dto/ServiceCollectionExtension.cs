@@ -11,7 +11,8 @@ public static class ServiceCollectionExtension
     {
         services.AddScoped<IValidator<RegisterRequest>, RegisterValidator>();
         services.AddScoped<IValidator<LoginRequest>, LoginValidator>();
-
+        services.AddScoped<IValidator<VerifyEmailRequest>, VerifyEmailValidator>();
+        
         return services;
     }
 }
