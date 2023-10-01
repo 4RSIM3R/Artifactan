@@ -1,7 +1,9 @@
 using Artifactan.Dto;
 using Artifactan.Dto.Request;
+using Artifactan.Handlers;
 using Artifactan.Queries.Register;
 using FluentValidation;
+using Hangfire;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -40,9 +42,8 @@ public class RegisterController : ControllerBase
 
         var result = await _mediator.Send(new RegisterNewUser(payload));
         
-        // send email
-        await _mediator.Publish(new SendEmailToNewUser(result));
-
+        BackgroundJob.Enqueue<SendEmailHandler>(x => x.EnqueueEmailSendingJob(new SendEmailToNewUser(result)));
+        
         return Ok(result);
     }
     
